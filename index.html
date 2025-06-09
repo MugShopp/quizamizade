@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz da Amizade</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(to bottom right, #00C4B3, #ffffff);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 80px;
+    }
+    header img {
+      width: 300px;
+      margin: 30px 0 10px;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .quiz-container {
+      max-width: 800px;
+      width: 90%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      padding: 30px;
+      margin-top: 20px;
+    }
+    .question {
+      margin-bottom: 25px;
+    }
+    .question h3 {
+      margin-bottom: 10px;
+      color: #00A497;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 5px 0;
+      padding: 10px;
+      font-size: 1em;
+      background: #e0f7f5;
+      border: 2px solid #00C4B3;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .options button:hover {
+      background: #00C4B3;
+      color: white;
+    }
+    #result {
+      margin-top: 40px;
+      text-align: center;
+    }
+    #result img {
+      max-width: 200px;
+      margin: 20px auto;
+    }
+    footer {
+      margin-top: 50px;
+    }
+    footer img {
+      width: 100px;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="https://i.postimg.cc/htLxrC3p/Photoroom-20250608-210804823.png" alt="Quiz da Amizade"/>
+  </header>
+
+  <h1>Quiz da Amizade</h1>
+
+  <div class="quiz-container" id="quiz"></div>
+
+  <div id="result"></div>
+
+  <footer>
+    <img src="https://i.postimg.cc/7LWQCZjQ/Logo-Alta-Resolu-o-1.png" alt="MugShopp logo"/>
+  </footer>
+
+  <script>
+    const questions = [
+      {
+        question: "Qual é o prato favorito da pessoa que te presenteou?",
+        options: ["Pizza", "Strogonoff", "Feijoada", "Lasanha"],
+        answer: "Strogonoff"
+      },
+      {
+        question: "Qual o signo dela?",
+        options: ["Áries", "Libra", "Capricórnio", "Gêmeos"],
+        answer: "Capricórnio"
+      },
+      {
+        question: "O que ela ama fazer nas horas vagas?",
+        options: ["Viajar", "Ficar no celular", "Ver filmes e séries", "Sair pra dançar"],
+        answer: "Ver filmes e séries"
+      },
+      {
+        question: "Com qual animal ela mais se identifica?",
+        options: ["Cachorros", "Gatos", "Pássaros", "Hamsters"],
+        answer: "Gatos"
+      },
+      {
+        question: "Qual o estilo musical favorito?",
+        options: ["Anos 80", "Sertanejo", "Pop atual", "Funk"],
+        answer: "Qualquer uma anos 80"
+      },
+      {
+        question: "Um grande sonho dela é...",
+        options: ["Fazer uma tatuagem", "Viajar pro exterior", "Ter filhos", "Comprar uma casa"],
+        answer: "Comprar uma casa"
+      },
+      {
+        question: "Qual conquista ela mais quer no momento?",
+        options: ["Ter mais tempo livre", "Casar", "Comprar a casa própria", "Fazer academia"],
+        answer: "Comprar a casa própria"
+      },
+      {
+        question: "Ela é mais do tipo...",
+        options: ["Noturna", "Do dia", "Indecisa", "Ambas"],
+        answer: "Do dia"
+      },
+      {
+        question: "Ela se considera...",
+        options: ["Atleta", "Sedentária", "Agitada", "Zen demais"],
+        answer: "Sedentária"
+      },
+      {
+        question: "Uma palavra que define o que ela mais valoriza:",
+        options: ["Sucesso", "Fidelidade", "Liberdade", "Dinheiro"],
+        answer: "Liberdade"
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    const resultContainer = document.getElementById("result");
+    let score = 0;
+    let currentQuestion = 0;
+
+    function showQuestion(index) {
+      const q = questions[index];
+      quizContainer.innerHTML = `
+        <div class="question">
+          <h3>${index + 1}. ${q.question}</h3>
+          <div class="options">
+            ${q.options.map(option => `<button onclick="checkAnswer('${option}')">${option}</button>`).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    function checkAnswer(selected) {
+      if (selected === questions[currentQuestion].answer) {
+        score++;
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion(currentQuestion);
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      let message = "";
+      let gif = "";
+      let percentage = (score / questions.length) * 100;
+
+      if (percentage < 50) {
+        message = "Vixe... Tá precisando prestar mais atenção! 😂";
+        gif = "https://i.postimg.cc/Njm8nGL8/giphy.gif";
+      } else if (percentage === 50) {
+        message = "Na média! Tá no caminho! 👀";
+        gif = "https://i.postimg.cc/fT3fxfNr/giphy-2.gif";
+      } else if (percentage < 100) {
+        message = "Você conhece bem! Parabéns! 👏";
+        gif = "https://i.postimg.cc/L6rBvg46/giphy-1.gif";
+      } else {
+        message = "Gabaritou, bebê! Almas gêmeas detectadas! 💘";
+        gif = "https://i.postimg.cc/L6rBvg46/giphy-1.gif";
+      }
+
+      quizContainer.innerHTML = "";
+      resultContainer.innerHTML = `
+        <h2>Resultado: ${score} de ${questions.length}</h2>
+        <p>${message}</p>
+        <img src="${gif}" alt="Resultado GIF"/>
+      `;
+    }
+
+    // Iniciar
+    showQuestion(currentQuestion);
+  </script>
+</body>
+</html>
